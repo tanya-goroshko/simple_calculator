@@ -29,13 +29,9 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Simple Calculator')),
-      body: BlocProvider<CalculatorBloc>(
-        create: (context) => CalculatorBloc(CalculatorState(
-            result: '0',
-            expression: '0',
-            resultFontSize: 38.0,
-            expressionFontSize: 28.0)),
-        child: BlocBuilder<CalculatorBloc, CalculatorState>(
+      body: BlocProvider<CalculatorCubit>(
+        create: (context) => CalculatorCubit(),
+        child: BlocBuilder<CalculatorCubit, CalculatorState>(
           builder: (context, state) {
             return Column(
               children: <Widget>[

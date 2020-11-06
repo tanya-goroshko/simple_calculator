@@ -21,8 +21,19 @@ class BuildButton extends StatelessWidget {
               side: BorderSide(
                   color: Colors.white, width: 1, style: BorderStyle.solid)),
           padding: EdgeInsets.all(16.0),
-          onPressed: () => context.bloc<CalculatorBloc>().add(CalculatorEvent(
-              symbol: text, operation: getOperationFromText(text))),
+          onPressed: () {
+            textToFunction(() {
+              context.bloc<CalculatorCubit>().reset();
+            }, () {
+              context.bloc<CalculatorCubit>().backspace();
+            },
+            () {
+              context.bloc<CalculatorCubit>().result();
+            },
+            () {
+              context.bloc<CalculatorCubit>().input(text);
+            });
+          },
           child: Text(text,
               style: TextStyle(
                   fontSize: 30.0,
@@ -31,22 +42,20 @@ class BuildButton extends StatelessWidget {
         ));
   }
 
-  Operation getOperationFromText(text) {
-    Operation operation;
-
+  void textToFunction(
+      Function reset, Function backspace, Function result, Function input) {
     switch (text) {
       case 'C':
-        operation = Operation.reset;
+        reset();
         break;
       case '⌫':
-        operation = Operation.backspace;
+        backspace();
         break;
       case '=':
-        operation = Operation.result;
+        result();
         break;
       default:
-        operation = Operation.input;
+        input();
     }
-    return operation;
   }
 }
